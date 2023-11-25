@@ -55,7 +55,7 @@ const UserProfile = () => {
                 ))}
               </ul>
             )}
-            <p onClick={handleSetChangeMode}>let`s update</p>
+            <button onClick={handleSetChangeMode}>let`s update</button>
             {changeMode && <UpdateUser id={idUser} />}
           </section>
         </article>

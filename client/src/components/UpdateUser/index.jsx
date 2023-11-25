@@ -59,7 +59,7 @@ const UpdateUser = (props) => {
               <span>avatar:</span>
               <input name="avatar" type="file" onChange={handleAvatar} />
             </label>
-            <button type="submit">add user</button>
+            <button type="submit">update user</button>
           </Form>
         );
       }}
