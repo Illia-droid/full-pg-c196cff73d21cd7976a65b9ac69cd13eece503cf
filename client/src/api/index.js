@@ -8,7 +8,7 @@ const httpCLient = axios.create({
 export const getAllUsers = (options = {}) => {
   const defaultOptions = {
     page: 1,
-    amount: 15,
+    amount: 5,
   };
   const finalyOptions = {
     ...defaultOptions,
@@ -27,8 +27,13 @@ export const getOneUser = (id) => httpCLient.get(`/users/${id}`);
 
 export const deleteUser = (id) => httpCLient.delete(`/users/${id}`);
 
+export const updateUser = ({ id, data }) => {
+  return httpCLient.patch(`/users/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
 export const getAllUsersTasks = ({ id }) =>
   httpCLient.get(`/users/${id}/tasks`);
-
-export const updateUserTask = ({ idUser, idTask }) =>
-  httpCLient.patch(`/users/${idUser}/tasks/${idTask}`);

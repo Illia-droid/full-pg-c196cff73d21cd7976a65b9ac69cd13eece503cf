@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getUser } from "../../store/usersSlice";
 import { getUserTasks } from "../../store/tasksSlice";
+import UpdateUser from "../UpdateUser";
 
 const UserProfile = () => {
+  const [changeMode, setChangeMode] = useState(false);
   const { idUser } = useParams();
   const dispatch = useDispatch();
   const {
@@ -17,6 +19,9 @@ const UserProfile = () => {
   const handleShowTasks = () => {
     dispatch(getUserTasks({ id: idUser }));
   };
+  const handleSetChangeMode = () => {
+    setChangeMode(!changeMode);
+  };
   return (
     <>
       {usersError && <p>{usersError}</p>}
@@ -24,12 +29,14 @@ const UserProfile = () => {
       {!usersError && !usersIsFetching && currentUser && (
         <article>
           <h2>
+            {currentUser.firstName}
+            {currentUser.lastName}
             UserProfile id = {idUser} email:{currentUser.email}
           </h2>
           {currentUser.avatar && (
             <div>
               <img
-                width={100}
+                width={250}
                 src={`http://localhost:3000/images/${currentUser.avatar}`}
                 alt="avatar"
               />
@@ -43,12 +50,13 @@ const UserProfile = () => {
               <ul>
                 {tasks.map((task) => (
                   <>
-                    <li key={task.id}>{task.content}</li>
-                    <button> change task</button>
+                    <li key={task.id}>{task.id + " " + task.content}</li>
                   </>
                 ))}
               </ul>
             )}
+            <p onClick={handleSetChangeMode}>let`s update</p>
+            {changeMode && <UpdateUser id={idUser} />}
           </section>
         </article>
       )}

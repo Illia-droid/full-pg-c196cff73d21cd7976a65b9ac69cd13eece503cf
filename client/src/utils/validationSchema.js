@@ -1,5 +1,4 @@
 import * as Yup from "yup";
-// import { addDays } from "date-fns";
 export const taskShema = Yup.object({
   body: Yup.string()
     .trim()
@@ -17,10 +16,7 @@ export const userSchema = Yup.object({
   firstName: chemaName,
   lastName: chemaName,
   email: Yup.string().trim().email().required(),
-  password: Yup.string()
-    .trim()
-    .matches(/^[A-Z][a-z]{2,63}$/)
-    .required(),
+  password: Yup.string().trim().required(),
   birthday: Yup.date().max(new Date(), "wrong date").required("required"),
   isMale: Yup.boolean().required(),
 });

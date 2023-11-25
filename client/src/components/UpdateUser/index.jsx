@@ -1,31 +1,24 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { updtUserTask } from "../../store/tasksSlice";
-import { ErrorMessage, Field, Formik } from "formik";
-import { Form } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
-const initialValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  birthday: "",
-  isMale: false,
-  avatar: "",
-};
-
-const TaskForm = () => {
+import { useDispatch, useSelector } from "react-redux";
+import { updtUser } from "../../store/usersSlice";
+import { userSchema } from "../../utils/validationSchema";
+const UpdateUser = (props) => {
+  const { id } = props;
+  const { currentUser } = useSelector((state) => state.users);
+  const initialValues = currentUser;
   const dispatch = useDispatch();
-  const onSubmit = (values, formikBag) => {
-    console.log(values);
-    dispatch(updtUserTask(values));
+
+  const onSubmit = (data, formikBag) => {
+    dispatch(updtUser({ id, data }));
   };
+
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={onSubmit}
-      //   validationSchema={userSchema}
-    >
+      validationSchema={userSchema}>
       {(formikProps) => {
         const handleAvatar = ({ target }) => {
           formikProps.setFieldValue("avatar", target.files[0]);
@@ -33,37 +26,37 @@ const TaskForm = () => {
         return (
           <Form encType="multipart/form-data">
             <label>
-              <span>firstName:</span>
+              <span>first name:</span>
               <Field name="firstName" />
               <ErrorMessage name="firstName" />
             </label>
             <label>
-              <span>lastName</span>
+              <span>last name:</span>
               <Field name="lastName" />
               <ErrorMessage name="lastName" />
             </label>
             <label>
-              <span>email</span>
+              <span>email:</span>
               <Field name="email" type="email" />
               <ErrorMessage name="email" />
             </label>
             <label>
-              <span>password</span>
+              <span>password:</span>
               <Field name="password" type="password" />
               <ErrorMessage name="password" />
             </label>
             <label>
-              <span>birthday</span>
+              <span>birthday:</span>
               <Field name="birthday" type="date" />
               <ErrorMessage name="birthday" />
             </label>
             <label>
-              <span>isMale</span>
+              <span>male:</span>
               <Field name="isMale" type="checkbox" />
               <ErrorMessage name="isMale" />
             </label>
             <label>
-              <span>avatar</span>
+              <span>avatar:</span>
               <input name="avatar" type="file" onChange={handleAvatar} />
             </label>
             <button type="submit">add user</button>
@@ -74,4 +67,4 @@ const TaskForm = () => {
   );
 };
 
-export default TaskForm;
+export default UpdateUser;

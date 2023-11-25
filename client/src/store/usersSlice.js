@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createUser, deleteUser, getAllUsers, getOneUser } from "../api";
+import {
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getOneUser,
+  updateUser,
+} from "../api";
 import { pendingReducer, rejectReducer, decorateAsyncThunk } from "./helpers";
 
 const USER_SLICE_NAME = "users";
@@ -22,6 +28,10 @@ export const getUser = decorateAsyncThunk({
 export const delUser = decorateAsyncThunk({
   type: `${USER_SLICE_NAME}/deleteUser`,
   thunk: deleteUser,
+});
+export const updtUser = decorateAsyncThunk({
+  type: `${USER_SLICE_NAME}/updtUser`,
+  thunk: updateUser,
 });
 
 const usersSlice = createSlice({
@@ -66,6 +76,14 @@ const usersSlice = createSlice({
       state.users = state.users.filter((user) => user.id !== action.payload.id);
     });
     builder.addCase(delUser.rejected, rejectReducer);
+
+    builder.addCase(updtUser.pending, pendingReducer);
+    builder.addCase(updtUser.fulfilled, (state, action) => {
+      state.isFetching = false;
+      state.error = null;
+      state.currentUser = action.payload;
+    });
+    builder.addCase(updtUser.rejected, rejectReducer);
   },
 });
 export default usersSlice.reducer;
