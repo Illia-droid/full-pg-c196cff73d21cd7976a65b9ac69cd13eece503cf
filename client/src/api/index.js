@@ -16,7 +16,6 @@ export const getAllUsers = (options = {}) => {
   };
   return httpCLient.get(`/users?${qs.stringify(finalyOptions)}`);
 };
-
 export const createUser = (values) => {
   return httpCLient.post("/users", values, {
     headers: {
@@ -24,7 +23,12 @@ export const createUser = (values) => {
     },
   });
 };
-
 export const getOneUser = (id) => httpCLient.get(`/users/${id}`);
 
 export const deleteUser = (id) => httpCLient.delete(`/users/${id}`);
+
+export const getAllUsersTasks = ({ id }) =>
+  httpCLient.get(`/users/${id}/tasks`);
+
+export const updateUserTask = ({ idUser, idTask }) =>
+  httpCLient.patch(`/users/${idUser}/tasks/${idTask}`);
