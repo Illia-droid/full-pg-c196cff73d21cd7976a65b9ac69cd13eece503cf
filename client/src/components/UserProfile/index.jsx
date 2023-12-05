@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getUser } from "../../store/usersSlice";
 import { getUserTasks } from "../../store/tasksSlice";
-import UpdateUser from "../UpdateUser";
+import UpdateUser from "../UpdateUserForm";
 
 const UserProfile = () => {
   const [changeMode, setChangeMode] = useState(false);
@@ -13,15 +13,23 @@ const UserProfile = () => {
     users: { error: usersError, isFetching: usersIsFetching, currentUser },
     tasks: { error: tasksError, isFetching: tasksIsFetching, tasks },
   } = useSelector((store) => store);
+
   useEffect(() => {
     dispatch(getUser(Number(idUser))); // eslint-disable-next-line
   }, [idUser, dispatch]);
+
   const handleShowTasks = () => {
     dispatch(getUserTasks({ id: idUser }));
   };
+
   const handleSetChangeMode = () => {
     setChangeMode(!changeMode);
   };
+
+  const mapTasks = (task) => (
+    <li key={task.id}>{task.id + " " + task.content}</li>
+  );
+
   return (
     <>
       {usersError && <p>{usersError}</p>}
@@ -47,13 +55,7 @@ const UserProfile = () => {
             {tasksError && <p>{tasksError}</p>}
             {tasksIsFetching && <p>Loading...</p>}
             {!tasksError && !tasksIsFetching && tasks && (
-              <ul>
-                {tasks.map((task) => (
-                  <>
-                    <li key={task.id}>{task.id + " " + task.content}</li>
-                  </>
-                ))}
-              </ul>
+              <ul>{tasks.map(mapTasks)}</ul>
             )}
             <button onClick={handleSetChangeMode}>let`s update</button>
             {changeMode && <UpdateUser id={idUser} />}

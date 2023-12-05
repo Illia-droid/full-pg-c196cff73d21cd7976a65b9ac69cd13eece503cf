@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { updtUser } from "../../store/usersSlice";
 import { userSchema } from "../../utils/validationSchema";
-const UpdateUser = (props) => {
+const UpdateUserForm = (props) => {
   const { id } = props;
   const { currentUser } = useSelector((state) => state.users);
   const initialValues = currentUser;
@@ -67,4 +67,4 @@ const UpdateUser = (props) => {
   );
 };
 
-export default UpdateUser;
+export default UpdateUserForm;
